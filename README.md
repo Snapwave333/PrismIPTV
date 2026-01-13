@@ -55,6 +55,12 @@ Or see [QUICK_START.md](QUICK_START.md) for detailed instructions.
 - **Audio-Reactive Visuals**: Real-time FFT analysis driving 3D elements for a deep sensory connection.
 - **Diegetic Controls**: Aerogel-material 3D controls integrated directly into the scene.
 
+### 📱 Mobile Companion App
+
+- **Remote Control**: Control playback, volume, and channel selection from your phone.
+- **Haptic Feedback**: Physical response for button presses.
+- **Instant Sync**: WebSocket-based real-time connection.
+
 ### 🔧 MCP Server Suite
 
 **Integrated Control**:
@@ -83,6 +89,11 @@ Or see [QUICK_START.md](QUICK_START.md) for detailed instructions.
         ┌──────────▼──────────┐
         │  External Services  │
         │  EPG • Radio API    │
+        └─────────────────────┘
+                   ▲
+                   │ WebSocket
+        ┌──────────┴──────────┐
+        │ Mobile Remote WebApp│
         └─────────────────────┘
 ```
 
