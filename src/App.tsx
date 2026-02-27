@@ -2,8 +2,11 @@ import { useEffect, Suspense } from 'react';
 import { DesktopPlayer } from './components/player/DesktopPlayer';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { ParentalControls } from './components/ParentalControls/ParentalControls';
+import { useAppStore } from './stores/useAppStore';
+import { App as CapacitorApp } from '@capacitor/app';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
-// Loading component
 const Loading = () => {
   console.log('App: Rendering Loading component');
   return (
@@ -15,6 +18,35 @@ const Loading = () => {
 function App() {
   console.log('App: Render Cycle Start');
   useKeyboardShortcuts();
+  const { sidebarOpen, setSidebarOpen } = useAppStore();
+
+  useEffect(() => {
+    const handleHardwareBack = () => {
+      if (sidebarOpen) {
+        setSidebarOpen(false);
+      } else {
+        CapacitorApp.exitApp();
+      }
+    };
+
+    const removeListener = CapacitorApp.addListener('backButton', handleHardwareBack);
+
+    return () => {
+      removeListener.then((fn: { remove: () => void }) => fn.remove());
+    };
+  }, [sidebarOpen, setSidebarOpen]);
+
+  useEffect(() => {
+    const setupStatusBar = async () => {
+      try {
+        await StatusBar.setStyle({ style: Style.Dark });
+        await StatusBar.setBackgroundColor({ color: '#0f172a' });
+      } catch (e) {
+        console.log('StatusBar not available:', e);
+      }
+    };
+    setupStatusBar();
+  }, []);
 
 
   useEffect(() => {
@@ -28,6 +60,7 @@ function App() {
     <ErrorBoundary>
       <Suspense fallback={<Loading />}>
         <DesktopPlayer />
+        <ParentalControls />
       </Suspense>
     </ErrorBoundary>
   );

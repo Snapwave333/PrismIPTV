@@ -19,7 +19,8 @@
 }
 
 .controls:hover,
-.controls:focus-within {
+.controls:focus-within,
+.controls.controlsVisible {
   opacity: 1;
   transform: translateY(0);
 }

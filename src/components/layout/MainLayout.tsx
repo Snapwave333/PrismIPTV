@@ -1,10 +1,20 @@
 import React from 'react';
 import { Sidebar } from './Sidebar';
-import { useAppStore } from '../../stores/useAppStore';
-import { Menu } from 'lucide-react';
+import { useAppStore, type AppMode } from '../../stores/useAppStore';
+import { Menu, Tv, Mic, Trophy, Heart, Settings, Ghost } from 'lucide-react';
 import { MediaPlayer } from '../player/MediaPlayer';
 import { Breadcrumbs } from './Breadcrumbs';
 import styles from './MainLayout.module.css';
+import clsx from 'clsx';
+
+const BOTTOM_NAV_ITEMS: { id: AppMode; label: string; icon: React.ElementType }[] = [
+  { id: 'tv', label: 'Live', icon: Tv },
+  { id: 'sports', label: 'Sports', icon: Trophy },
+  { id: 'anime', label: 'Anime', icon: Ghost },
+  { id: 'audio', label: 'Radio', icon: Mic },
+  { id: 'favorites', label: 'Favs', icon: Heart },
+  { id: 'settings', label: 'Settings', icon: Settings },
+];
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -13,7 +23,7 @@ interface MainLayoutProps {
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children, rightPanel }) => {
   console.log('MainLayout: Render');
-  const { toggleSidebar } = useAppStore();
+  const { toggleSidebar, setMode, mode } = useAppStore();
   const [isSheetExpanded, setIsSheetExpanded] = React.useState(false);
 
   return (
@@ -55,6 +65,22 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, rightPanel }) 
           </div>
         </div>
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className={styles.bottomNav}>
+        <div className={styles.bottomNavInner}>
+          {BOTTOM_NAV_ITEMS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              className={clsx(styles.bottomNavItem, mode === id && styles.bottomNavItemActive)}
+              onClick={() => setMode(id)}
+            >
+              <Icon size={22} />
+              <span className={styles.bottomNavLabel}>{label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { usePlayerStore } from '../../stores/usePlayerStore';
 import { clsx } from 'clsx';
@@ -6,6 +6,7 @@ import styles from './PlayerControls.module.css';
 
 export const PlayerControls: React.FC = () => {
   const { isPlaying, play, pause, volume, setVolume, isMuted, toggleMute } = usePlayerStore();
+  const [showControls, setShowControls] = useState(false);
 
   const togglePlay = () => isPlaying ? pause() : play();
 
@@ -17,8 +18,16 @@ export const PlayerControls: React.FC = () => {
     }
   };
 
+  const handleTouchTap = () => {
+    setShowControls(!showControls);
+    setTimeout(() => setShowControls(false), 3000);
+  };
+
   return (
-    <div className={styles.controls}>
+    <div 
+      className={clsx(styles.controls, showControls && styles.controlsVisible)} 
+      onClick={handleTouchTap}
+    >
       <button 
         className={clsx(styles.iconBtn, 'btn-glow')} 
         onClick={togglePlay}

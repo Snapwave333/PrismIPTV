@@ -8,6 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "android": "npm run build && npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:build:debug": "cd android && ./gradlew assembleDebug",
     "test": "playwright test",
     "test:smoke": "playwright test --project=smoke-chromium",
     "test:integration": "playwright test tests/integration/",
@@ -29,6 +33,9 @@
     "test:coverage": "playwright test --reporter=html --reporter=json"
   },
   "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/app": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.1",
     "@pixiv/three-vrm": "^3.4.4",
     "@types/three": "^0.182.0",
     "clsx": "^2.1.1",
@@ -43,6 +50,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.57.0",
     "@types/cors": "^2.8.19",
